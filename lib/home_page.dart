@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,6 +18,8 @@ class _HomePageState extends State<HomePage> {
   List<dynamic> child2List = [];
   List<dynamic> child1 = [];
   List<dynamic> child2 = [];
+
+  String isi = '';
 
   String? parentId, child1Id, child2Id;
   PDFDocument document = new PDFDocument();
@@ -131,15 +134,15 @@ class _HomePageState extends State<HomePage> {
                     "Pilih Salah Satu",
                     this.child2Id,
                     this.child2, (onChangedVal) async {
-                  final pdf = new pw.Document();
-                  //Directory extDir = null;
-                  var extDir;
-                  if (Platform.isAndroid) {
-                    extDir = await getApplicationDocumentsDirectory();
-                  } else {
-                    extDir = await getApplicationDocumentsDirectory();
-                  }
-                  final file = File("${extDir.path}/example.pdf");
+                  // final pdf = new pw.Document();
+                  // //Directory extDir = null;
+                  // var extDir;
+                  // if (Platform.isAndroid) {
+                  //   extDir = await getExternalStorageDirectory();
+                  // } else {
+                  //   extDir = await getTemporaryDirectory();
+                  // }
+                  // final file = File("${extDir.path}/example.pdf");
                   this.child2Id = onChangedVal;
                   List<dynamic> child2Val = this
                       .child2
@@ -147,17 +150,18 @@ class _HomePageState extends State<HomePage> {
                           child2Item['id'].toString() ==
                           onChangedVal.toString())
                       .toList();
-                  pdf.addPage(pw.Page(
-                      pageFormat: PdfPageFormat.a4,
-                      build: (pw.Context context) {
-                        return pw.Center(
-                          child: pw.Text(child2Val[0]['name']),
-                        ); // Center
-                      }));
-                  await file.writeAsBytes(await pdf.save());
-                  this.document = await PDFDocument.fromFile(File(file.path));
+                  // pdf.addPage(pw.Page(
+                  //     pageFormat: PdfPageFormat.a4,
+                  //     build: (pw.Context context) {
+                  //       return pw.Center(
+                  //         child: pw.Text(child2Val[0]['name']),
+                  //       ); // Center
+                  //     }));
+                  // await file.writeAsBytes(await pdf.save());
+                  // this.document = await PDFDocument.fromFile(File(file.path));
                   setState(() {
-                    this.show_pdf = true;
+                    //   this.show_pdf = true;
+                    this.isi = child2Val[0]['name'];
                   });
                 }, (onValidateVal) {
                   if (onValidateVal == []) {
@@ -170,6 +174,46 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: 10,
                     optionLabel: "name",
                     optionValue: "id"),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: FloatingActionButton.extended(
+                    heroTag: "hero2",
+                    onPressed: () async {
+                      final pdf = new pw.Document();
+                      //Directory extDir = null;
+                      var extDir;
+                      if (Platform.isAndroid) {
+                        extDir = await getExternalStorageDirectory();
+                      } else {
+                        extDir = await getTemporaryDirectory();
+                      }
+                      final file = File("${extDir.path}/example.pdf");
+                      pdf.addPage(pw.Page(
+                          pageFormat: PdfPageFormat.a4,
+                          build: (pw.Context context) {
+                            return pw.Center(
+                              child: pw.Text(this.isi),
+                            ); // Center
+                          }));
+                      // await file.writeAsBytes(await pdf.save());
+                      await Printing.layoutPdf(
+                          onLayout: (PdfPageFormat format) async => pdf.save());
+                      // this.document = await PDFDocument.fromFile(File(file.path));
+                      // setState(() {
+                      //   this.show_pdf = true;
+                      // });
+                    },
+                    label: const Text(
+                      'Cetak',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    icon: const Icon(
+                      Icons.download,
+                      color: Colors.white,
+                    ),
+                    backgroundColor: Colors.blue,
+                  ),
+                )
               ],
             )
           : Stack(children: <Widget>[

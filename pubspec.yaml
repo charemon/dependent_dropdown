@@ -38,6 +38,7 @@ dependencies:
   pdf: ^3.8.4
   path_provider: ^2.0.8
   advance_pdf_viewer: ^2.0.1
+  printing: ^5.9.3
 
 dev_dependencies:
   flutter_test:

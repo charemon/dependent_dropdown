@@ -314,6 +314,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "printing",
+      "rootUri": "file:///Users/asepsupriatna/Development/flutter/.pub-cache/hosted/pub.dartlang.org/printing-5.9.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "process",
       "rootUri": "file:///Users/asepsupriatna/Development/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4",
       "packageUri": "lib/",
@@ -440,7 +446,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2023-02-06T22:36:28.734060Z",
+  "generated": "2023-02-06T23:08:04.790919Z",
   "generator": "pub",
   "generatorVersion": "2.17.6"
 }
